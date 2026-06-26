@@ -1,9 +1,10 @@
 import "./App.css";
+import Navbar from "./layouts/Navbar";
 
 function App() {
   return (
     <div className="App">
-      <div className="bg-primary">BTN</div>
+      <Navbar />
     </div>
   );
 }
