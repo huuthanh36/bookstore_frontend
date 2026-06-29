@@ -4,7 +4,7 @@ const Footer: React.FC = () => {
   const menuItems = ["Home", "Features", "Pricing", "FAQs", "About"];
 
   return (
-    <footer className="text-light py-5" style={{ backgroundColor: "#1b2430" }}>
+    <footer className="text-dark  py-5" style={{ backgroundColor: "#ffffff" }}>
       <div className="container">
         {/* Top section */}
         <div className="row g-5">
@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
                   <li key={item} className="mb-2">
                     <a
                       href="#"
-                      className="text-decoration-none text-light opacity-75"
+                      className="text-decoration-none text-dark opacity-75"
                     >
                       {item}
                     </a>
@@ -32,14 +32,14 @@ const Footer: React.FC = () => {
           <div className="col-md-6">
             <h5 className="fw-bold mb-3">Subscribe to our newsletter</h5>
 
-            <p className="text-light opacity-75">
+            <p className="text-dark opacity-75">
               Monthly digest of what's new and exciting from us.
             </p>
 
             <div className="d-flex gap-2">
               <input
                 type="email"
-                className="form-control bg-transparent text-light border-secondary"
+                className="form-control bg-transparent text-dark  border-secondary"
                 placeholder="Email address"
               />
 
@@ -53,16 +53,16 @@ const Footer: React.FC = () => {
 
         {/* Bottom section */}
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
-          <p className="mb-3 mb-md-0 text-light opacity-75">
+          <p className="mb-3 mb-md-0 text-dark opacity-75">
             © 2026 Company, Inc. All rights reserved.
           </p>
 
           <div className="d-flex gap-4">
-            <a href="#" className="text-light fs-4">
+            <a href="#" className="text-dark fs-4">
               <i className="fa-brands fa-instagram"></i>
             </a>
 
-            <a href="#" className="text-light fs-4">
+            <a href="#" className="text-dark fs-4">
               <i className="fa-brands fa-facebook"></i>
             </a>
           </div>
