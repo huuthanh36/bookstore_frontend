@@ -1,28 +1,67 @@
-import type { Book } from "../../../models/Book";
+import { useEffect, useState } from "react";
+import type BookModel from "../../../models/BookModel";
+import ImageModel from "../../../models/ImageModel";
+import { getAllImages } from "../../../api/ImageAPI";
 
-interface BookProps {
-  book: Book;
+interface BookPropsInterface {
+  book: BookModel;
+  onAddToCart?: (book: BookModel) => void;
+  onToggleWishlist?: (book: BookModel) => void;
+  onQuickView?: (book: BookModel) => void;
 }
 
-const BookProps: React.FC<BookProps> = ({ book }) => {
+const BookProps: React.FC<BookPropsInterface> = (props) => {
+  const maSach: number = props.book.maSach;
+
+  const [listImage, setListImage] = useState<ImageModel[]>([]);
+  const [loadData, setLoadData] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getAllImages(maSach)
+      .then((imageData) => {
+        setListImage(imageData);
+        setLoadData(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoadData(false);
+      });
+  }, []);
+
+  if (loadData) {
+    return (
+      <div>
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div>
+        <h1>Error: {error}</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="col-md-3 mt-2">
       <div className="card">
         <img
-          src={book.imageUrl}
+          src={listImage.length > 0 ? listImage[0].duLieuAnh : ""}
           className="card-img-top"
-          alt={book.title}
+          alt={props.book.tenSach}
           style={{ height: "200px" }}
         />
         <div className="card-body">
-          <h5 className="card-title">{book.title}</h5>
-          <p className="card-text">{book.description}</p>
+          <h5 className="card-title">{props.book.tenSach}</h5>
+          <p className="card-text">{props.book.moTa}</p>
           <div className="price">
             <span className="original-price">
-              <del>{book.originalPrice.toFixed(2)}</del>
+              <del>{props.book.giaNiemYet?.toFixed(2)}</del>
             </span>
             <span className="discounted-price">
-              <strong>{book.price.toFixed(2)}</strong>
+              <strong>{props.book.giaBan?.toFixed(2)}</strong>
             </span>
           </div>
           <div className="row mt-2" role="group">

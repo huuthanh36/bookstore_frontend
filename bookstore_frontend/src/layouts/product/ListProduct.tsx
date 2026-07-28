@@ -1,44 +1,48 @@
-import type { Book } from "../../models/Book";
+import { useEffect, useState } from "react";
 import BookProps from "./components/BookProps";
-import book1 from "./../../assets/books/1.jpg";
-import book2 from "./../../assets/books/2.jpg";
-import book3 from "./../../assets/books/3.jpg";
+import type BookModel from "../../models/BookModel";
+import { getAllBooks } from "../../api/BookAPI";
 
-const List: React.FC = () => {
-  const books: Book[] = [
-    {
-      id: 1,
-      title: "Book 1",
-      description: "Description of Book 1",
-      originalPrice: 20,
-      price: 15,
-      imageUrl: book1,
-    },
-    {
-      id: 2,
-      title: "Book 2",
-      description: "Description of Book 2",
-      originalPrice: 25,
-      price: 20,
-      imageUrl: book2,
-    },
-    {
-      id: 3,
-      title: "Book 3",
-      description: "Description of Book 3",
-      originalPrice: 30,
-      price: 25,
-      imageUrl: book3,
-    },
-  ];
+const ListProduct: React.FC = () => {
+  const [listProducts, setListProducts] = useState<BookModel[]>([]);
+  const [loadData, setLoadData] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getAllBooks()
+      .then((bookData) => {
+        setListProducts(bookData);
+        setLoadData(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoadData(false);
+      });
+  }, []);
+
+  if (loadData) {
+    return (
+      <div>
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div>
+        <h1>Error: {error}</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="container ">
       <div className="row mt-4">
-        {books.map((book) => (
-          <BookProps book={book} />
+        {listProducts.map((book) => (
+          <BookProps key={book.maSach} book={book} />
         ))}
       </div>
     </div>
   );
 };
-export default List;
+export default ListProduct;
