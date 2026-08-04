@@ -1,8 +1,39 @@
-import book1 from "../../../assets/books/1.jpg";
-import book2 from "../../../assets/books/2.jpg";
-import book3 from "../../../assets/books/3.jpg";
+import { useEffect, useState } from "react";
+import type BookModel from "../../../models/BookModel";
+import { getThreeNewestBooks } from "../../../api/BookAPI";
+import CarouselItem from "./CarouselItem";
 
-function Carousel() {
+const Carousel: React.FC = () => {
+  const [listProducts, setListProducts] = useState<BookModel[]>([]);
+  const [loadData, setLoadData] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getThreeNewestBooks()
+      .then((bookData) => {
+        setListProducts(bookData);
+        setLoadData(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoadData(false);
+      });
+  }, []);
+
+  if (loadData) {
+    return (
+      <div>
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div>
+        <h1>Error: {error}</h1>
+      </div>
+    );
+  }
   return (
     <div>
       <div id="carouselExampleDark" className="carousel carousel-dark slide">
@@ -30,44 +61,13 @@ function Carousel() {
         </div>
         <div className="carousel-inner">
           <div className="carousel-item active" data-bs-interval="10000">
-            <div className="row align-items-center">
-              <div className="col-5 text-center ">
-                <img src={book1} style={{ width: "150px" }} />
-              </div>
-              <div className="col-7">
-                <h5>First slide label</h5>
-                <p>
-                  Some representative placeholder content for the first slide.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="carousel-item " data-bs-interval="10000">
-            <div className="row align-items-center">
-              <div className="col-5 text-center ">
-                <img src={book2} style={{ width: "150px" }} />
-              </div>
-              <div className="col-7">
-                <h5>First slide label</h5>
-                <p>
-                  Some representative placeholder content for the first slide.
-                </p>
-              </div>
-            </div>
+            <CarouselItem key={0} book={listProducts[0]} />
           </div>
           <div className="carousel-item " data-bs-interval="10000">
-            <div className="row align-items-center">
-              <div className="col-5 text-center ">
-                <img src={book3} style={{ width: "150px" }} />
-              </div>
-              <div className="col-7">
-                <h5>First slide label</h5>
-                <p>
-                  Some representative placeholder content for the first slide.
-                </p>
-              </div>
-            </div>
+            <CarouselItem key={1} book={listProducts[1]} />
+          </div>
+          <div className="carousel-item " data-bs-interval="10000">
+            <CarouselItem key={2} book={listProducts[2]} />
           </div>
         </div>
         <button
@@ -97,6 +97,6 @@ function Carousel() {
       </div>
     </div>
   );
-}
+};
 
 export default Carousel;
